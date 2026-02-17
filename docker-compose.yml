@@ -1,1 +1,51 @@
+version: "3.9"
 
+services:
+
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - rufe_network
+
+  backend:
+    build:
+      context: https://github.com/ardysCPN/rufe-backend.git
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION: ${JWT_EXPIRATION}
+      APP_DATALOADER_ENABLED: ${APP_DATALOADER_ENABLED}
+    networks:
+      - rufe_network
+
+  frontend:
+    build:
+      context: https://github.com/ardysCPN/rufe-front.git
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    networks:
+      - rufe_network
+
+volumes:
+  postgres_data:
+
+networks:
+  rufe_network:
+    driver: bridge
