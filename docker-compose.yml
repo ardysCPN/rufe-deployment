@@ -19,6 +19,7 @@ services:
     depends_on:
       - postgres
     environment:
+      # Conexión INTERNA entre contenedores
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
@@ -36,7 +37,10 @@ services:
     depends_on:
       - backend
     environment:
+      # El front llama a su propio servidor de Node
       API_URL: ${API_URL}
+      # Nombre del servicio backend en la red de Docker
+      INTERNAL_BACKEND_URL: http://backend:8080
       PORT: 4000
     networks:
       - rufe_network
