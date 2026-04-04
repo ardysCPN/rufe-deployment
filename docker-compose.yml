@@ -29,6 +29,11 @@ services:
       APP_CORS_ALLOWED_ORIGINS: ${APP_CORS_ALLOWED_ORIGINS} # (Para que el sistema intente inicializar/validar).
       APP_DATALOADER_FORCE_RESET: ${APP_DATALOADER_FORCE_RESET} # (Por defecto. Ponlo en true solo cuando quieras regenerar todo).
       APP_DATALOADER_I_AM_SURE: ${APP_DATALOADER_I_AM_SURE} # (El "seguro" adicional contra pérdida de datos reales).
+      # NUEVA PROPIEDAD: Directorio de almacenamiento de evidencias
+      APP_STORAGE_LOCAL_DIR: ${APP_STORAGE_LOCAL_DIR:-/var/lib/rufe/evidences}
+    volumes:
+      # Volumen para persistencia de imágenes y evidencias
+      - rufe_evidences:/var/lib/rufe/evidences
     networks:
       - rufe_network
   frontend:
@@ -48,6 +53,7 @@ services:
       - rufe_network
 volumes:
   postgres_data:
+  rufe_evidences: # Declaración del volumen para evidencias
 networks:
   rufe_network:
     driver: bridge
