@@ -49,6 +49,8 @@ services:
       # Nombre del servicio backend en la red de Docker
       INTERNAL_BACKEND_URL: http://backend:8080
       PORT: 4000
+      # NUEVA VARIABLE PARA EL BACKUP
+      BACKUP_ENCRYPTION_KEY: ${BACKUP_ENCRYPTION_KEY}
     networks:
       - rufe_network
 volumes:
