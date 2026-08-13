@@ -32,7 +32,7 @@ services:
       # NUEVA PROPIEDAD: Directorio de almacenamiento de evidencias
       APP_STORAGE_LOCAL_DIR: ${APP_STORAGE_LOCAL_DIR:-/var/lib/rufe/evidences}
     volumes:
-      # Volumen para persistencia de imágenes y evidencias
+      # Volumen para persistencia de imágenes y evidencias 
       - rufe_evidences:/var/lib/rufe/evidences
     networks:
       - rufe_network
